@@ -4,6 +4,7 @@ import express from 'express'
 import cors from 'cors'
 
 import authRouter from "./Routes/Auth/auth.routes.js";
+import userRouter from "./Routes/User/user.routes.js";
 
 const app = express()
 
@@ -18,7 +19,8 @@ app.get("/",(req,res)=>{
         message: "Welcome to exp.club task backend"
     })
 });
-app.use("/api/v1/auth",authRouter)
+app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/users",userRouter)
 
 
 

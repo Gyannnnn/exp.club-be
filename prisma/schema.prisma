@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  userName     String
+  userEmail    String   @unique
+  userPassword String
+  userBio      String
+  joinedAt     DateTime @default(now())
+  habits       Habit[]
+  streak       Int      @default(0)
+  lastCheckIn  DateTime?
+
+
+  following    Follow[]  @relation("follower")
+  followers    Follow[]  @relation("followee")
+
+  @@index([userName,userEmail])
+}
+
+model Habit {
+  id          String    @id @default(uuid())
+  name        String
+  description String?  
+  category    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, name])
+  @@index([name,description])
+}
+
+
+model Follow {
+  id           String   @id @default(uuid())
+  followerId   String
+  followeeId   String
+  follower     User     @relation("follower", fields: [followerId], references: [id])
+  followee     User     @relation("followee", fields: [followeeId], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@unique([followerId, followeeId])
+
+}

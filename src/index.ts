@@ -5,6 +5,7 @@ import cors from 'cors'
 
 import authRouter from "./Routes/Auth/auth.routes.js";
 import userRouter from "./Routes/User/user.routes.js";
+import habitRouter from "./Routes/Habits/habit.routes.js";
 
 const app = express()
 
@@ -20,7 +21,8 @@ app.get("/",(req,res)=>{
     })
 });
 app.use("/api/v1/auth",authRouter);
-app.use("/api/v1/users",userRouter)
+app.use("/api/v1/users",userRouter);
+app.use("/api/v1/habits",habitRouter);
 
 
 

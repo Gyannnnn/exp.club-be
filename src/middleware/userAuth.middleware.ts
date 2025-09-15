@@ -7,6 +7,8 @@ export const userAuthValidation = (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
+  
+  console.log("Auth header",authHeader)
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({
       message: "Unauthorised access",
@@ -16,7 +18,7 @@ export const userAuthValidation = (
   const token = authHeader.split(" ")[1] as string;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-
+   
     if (decoded) {
       next();
     } else {

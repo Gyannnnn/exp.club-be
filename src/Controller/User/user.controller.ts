@@ -16,7 +16,20 @@ export const getUser = async (req: Request, res: Response) => {
       where: {
         userEmail: email,
       },
-      select: {},
+      select: {
+        id: true,
+        userName: true,
+        userEmail: true,
+        userPassword: true,
+        userBio: true,
+        joinedAt: true,
+        habits: true,
+        streak: true,
+        lastCheckIn: true,
+
+        following: true,
+        followers: true,
+      },
     });
     if (!user) {
       res.status(400).json({
@@ -29,6 +42,7 @@ export const getUser = async (req: Request, res: Response) => {
       user: user,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Internal server error",
       error,
@@ -37,8 +51,10 @@ export const getUser = async (req: Request, res: Response) => {
 };
 
 export const getAllUsers = async (req: Request, res: Response) => {
+  console.log("s1")
   try {
     const users = await prisma.user.findMany();
+    console.log(users)
     if (!users || users.length === 0) {
       res.status(404).json({
         message: "No users found",
@@ -66,14 +82,16 @@ export const followUser = async (req: Request, res: Response) => {
   }
   try {
     if (followeeId === followerId) {
-      res.status(400).json({
+      res.status(401).json({
         message: "Cannot follow yourself",
       });
       return;
     }
-    const response = prisma.follow.create({
+    const response = await prisma.follow.create({
       data: { followerId, followeeId },
     });
+    console.log("---------------------------------")
+    console.log(response);
     if (!response) {
       res.status(400).json({
         message: "Failed to follow",

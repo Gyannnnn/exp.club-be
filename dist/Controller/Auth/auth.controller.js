@@ -29,7 +29,6 @@ export const signUp = async (request, response) => {
             });
             return;
         }
-        console.log("s1");
         const newUser = await prisma.user.create({
             data: {
                 userEmail,
@@ -61,7 +60,6 @@ export const signUp = async (request, response) => {
     }
 };
 export const signIn = async (request, response) => {
-    console.log(request.body);
     try {
         // Define and validate schema
         const schema = z.object({

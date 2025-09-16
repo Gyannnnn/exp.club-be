@@ -7,7 +7,10 @@ import userRouter from "./Routes/User/user.routes.js";
 import habitRouter from "./Routes/Habits/habit.routes.js";
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://exp-club-fe.vercel.app", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "Welcome to exp.club task backend"
